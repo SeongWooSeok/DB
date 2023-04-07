@@ -1,38 +1,30 @@
-CREATE TABLE MEMBER(
-ID VARCHAR2(10) PRIMARY KEY,
-PW VARCHAR2(10) NOT NULL,
-NAME VARCHAR2(30)  NOT NULL,
-REGDATE DATE DEFAULT SYSDATE  NOT NULL
-);
-DROP TABLE MEMBER;
+SELECT * FROM BOARD
+WHERE ROWNUM<=10
+ORDER BY NUM DESC;
 
-CREATE TABLE BOARD(
-NUM NUMBER PRIMARY KEY,
-TITLE VARCHAR2(200) NOT NULL,
-CONTENT VARCHAR2(2000) NOT NULL,
-ID VARCHAR2(10) NOT NULL,
-POSTDATE DATE DEFAULT SYSDATE NOT NULL,
-VISITCOUNT NUMBER(6,0)
---CONSTRAINT FK_ID FOREIGN KEY(ID) REFERENCES MEMBER(ID)
-);
 
-ALTER TABLE BOARD
-ADD CONSTRAINT BOARD_NUM_FK FOREIGN KEY(ID) REFERENCES MEMBER(ID);
+select *
+from(
+    select rownum, s.*
+    from(
+        select b.*
+        from board b
+        where title like '%페이징%'
+        order by num desc
+        )s
+    )
+where rownum between 1 and 50;
 
---1에서 시작 1씩 증가 최소값 1 최대값은 무한대 순환없고 캐시안함.
-CREATE SEQUENCE SEONG.SEQ_BOARD_NUM
-    INCREMENT BY 1
-    START WITH 1
-    MINVALUE 1
-    NOMAXVALUE 
-    NOCYCLE
-    NOCACHE;
-    
-INSERT INTO MEMBER(ID, PW,NAME)
-VALUES('ADMIN','1234','관리자');
+select*
+from(
+    select row_number() over(order by num desc) pnum,  b.*
+            from board b
+            where title like '%페이징%'
+            order by num desc
+            )
+where pnum between 11 and 20;
 
-DELETE FROM BOARD;
 
-INSERT INTO BOARD(NUM,TITLE,CONTENT,ID,VISITCOUNT)
-VALUES(SEQ_BOARD_NUM.NEXTVAL, '제목','내용','ADMIN',0);
-COMMIT;
+
+
+
