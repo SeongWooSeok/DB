@@ -1,38 +1,37 @@
-SELECT * FROM BOARD
-WHERE ROWNUM<=10
-ORDER BY NUM DESC;
-
-
-select *
-from(
-    select rownum, s.*
-    from(
-        select b.*
-        from board b
-        where title like '%페이징%'
-        order by num desc
-        )s
-    )
-where rownum between 1 and 50;
-
-select*
-from(
-    select row_number() over(order by num desc) pnum,  b.*
-            from board b
-            where title like '%페이징%'
-            order by num desc
-            )
-where pnum between 11 and 20;
-
-CREATE TABLE MYFILE(
+CREATE TABLE FILEBOARD(
 IDX NUMBER NOT NULL,
-NAME VARCHAR2(50) NOT NULL,
-TITLE VARCHAR2(200) NOT NULL,
-CATE VARCHAR2(100),
-OFILE VARCHAR2(200) NOT NULL,
-NFILE VARCHAR2(100) NOT NULL,
-REGDATE DATE DEFAULT SYSDATE NOT NULL
+NAME VARCHAR(50) NOT NULL,
+TITLE VARCHAR(200) NOT NULL,
+CONTENT VARCHAR(2000) NOT NULL,
+POSTDATE DATE DEFAULT SYSDATE NOT NULL,
+OFILE VARCHAR2(200),
+NFILE VARCHAR2(100),
+DOWNCOUNT NUMBER(5,0) NOT NULL,
+VISITCOUNT NUMBER NOT NULL,
+PASS VARCHAR2(50) NOT NULL
 );
 
+DROP TABLE FILEBOARD;
 
+ALTER TABLE FILEBOARD MODIFY DOWNCOUNT DEFAULT 0;
+ALTER TABLE FILEBOARD MODIFY VISITCOUNT DEFAULT 0;
 
+INSERT INTO FILEBOARD (IDX,NAME,TITLE,CONTENT,PASS)
+VALUES (SEQ_BOARD_NUM.NEXTVAL,  '강감찬', '자료게시판' , '더미내용1', '1234');
+INSERT INTO FILEBOARD (IDX,NAME,TITLE,CONTENT,PASS)
+VALUES (SEQ_BOARD_NUM.NEXTVAL,  '이순신', '자료게시판' , '더미내용2', '1234');
+INSERT INTO FILEBOARD (IDX,NAME,TITLE,CONTENT,PASS)
+VALUES (SEQ_BOARD_NUM.NEXTVAL,  '아인슈타인', '자료게시판' , '더미내용3', '1234');
+INSERT INTO FILEBOARD (IDX,NAME,TITLE,CONTENT,PASS)
+VALUES (SEQ_BOARD_NUM.NEXTVAL,  '에디슨', '자료게시판5' , '더미내용4', '1234');
+commit;
+
+SELECT COUNT(*)
+FROM FILEBOARD
+WHERE TITLE LIKE '%자료%';
+
+insert into fileboard(idx,name,itle,content,ofile,nfile,pass)
+values (seq_board_num.nextval, ?, ?, ?, ? ,?,?);
+
+update fileboard set visitcount = visitcount+1
+where idx=?;
