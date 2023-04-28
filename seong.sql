@@ -72,11 +72,19 @@ insert into basic_bbs values(basic_bbs_seq.nextval,'<mark>십</makr>','도둑놈','�
 
 CREATE TABLE USER_LIST(
 NAME VARCHAR2(30) PRIMARY KEY,
-PASSWORD VARCHAR2(100),
+PASSWORD VARCHAR2(300),
 AUTHORITY VARCHAR2(30),
 ENABLED NUMBER(1,10)
 );
 
+drop table user_list;
+
 --암호화된 비번을 넣어서 입력해야함
-insert into user_list values('user','','ROLE_USER',1);
-insert into user_list values('admin','','ROLE_ADMIN',1);
+insert into user_list values('user',1234,'ROLE_USER',1);
+insert into user_list values('admin','$2a$10$AX1wHE3Ssi1XKBFqwwxo7epQLrUW6CWsEu9/.bFPIK8vRbfHYwPLm','ROLE_ADMIN',1);
+
+create table transaction3(
+    accountid varchar2(20),
+    amount number);
+    
+
