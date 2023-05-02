@@ -87,4 +87,5 @@ create table transaction3(
     accountid varchar2(20),
     amount number);
     
+    select * from tb1_board where bno > 0;
 
